@@ -10,14 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161227004244) do
+ActiveRecord::Schema.define(version: 20161227223647) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "ipsums", force: :cascade do |t|
     t.string "theme"
     t.string "motto"
     t.string "color"
     t.string "image"
-    t.string "phrases"
+    t.string "accent"
+    t.string "phrases", default: [], array: true
   end
 
 end
