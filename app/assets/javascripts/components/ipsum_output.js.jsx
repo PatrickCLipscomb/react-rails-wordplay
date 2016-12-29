@@ -35,7 +35,7 @@ class IpsumOutput extends React.Component {
   styleIpsumOutput() {
     var ipsumJSX;
     if (this.props.currentIpsum.split(" ").length < 9) {
-      ipsumJSX = <h3 id="ipsumOutput" style={{color: this.props.activeIpsum.color}}>{this.props.currentIpsum}</h3>
+      ipsumJSX = <h3 id="singleWordOutput" style={{color: this.props.activeIpsum.color}}>{this.props.currentIpsum}</h3>
       $('#addTags').hide();
     } else {
       ipsumJSX = <p id="ipsumOutput">{this.state.openTag}{this.props.currentIpsum}{this.state.closeTag}</p>

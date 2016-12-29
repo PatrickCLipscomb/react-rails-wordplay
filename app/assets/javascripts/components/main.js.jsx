@@ -3,7 +3,7 @@
 class Main extends React.Component {
   constructor(props) {
     super(props)
-    this._bind('setGenericState', 'decideCurrentIpsum', 'removeMultiWords', 'changeTheme', 'getIpsum', 'goSolo')
+    this._bind('setGenericState', 'decideCurrentIpsum', 'removeMultiWords', 'changeTheme', 'getIpsum', 'goSolo', 'capitalize', 'punctuation', 'fillerWord')
     this.state = {
       ipsums: props.data[0],
       genericState: false,
@@ -71,18 +71,57 @@ class Main extends React.Component {
   }
 
   getIpsum() {
-    var ipsumString = this.state.activeIpsum.phrases.join(" ");
+    var ipsumStringArray = []
+    var phrases = this.state.activeIpsum.phrases
+    var _this = this;
+    for (var i = 0; i < phrases.length; i++) {
+      ipsumStringArray.push(phrases[Math.floor(Math.random() * phrases.length)] + ' ');
+      if (Math.floor(Math.random() * 100) < 25) {
+        ipsumStringArray.push(_this.fillerWord());
+        ipsumStringArray.push(phrases[Math.floor(Math.random() * phrases.length)] + ' ');
+      }
+      if (ipsumStringArray.length > 3 && Math.floor(Math.random() * 100) < 22) {
+        ipsumStringArray.push(phrases[Math.floor(Math.random() * phrases.length)]);
+        ipsumStringArray.push(_this.punctuation())
+        ipsumStringArray.push(_this.capitalize(phrases[Math.floor(Math.random() * phrases.length)]) + ' ');
+      }
+    }
+    ipsumStringArray.push(phrases[Math.floor(Math.random() * phrases.length)]);
+    ipsumStringArray.push(this.punctuation().trim())
+    var firstWord = this.capitalize(ipsumStringArray.shift());
+    ipsumStringArray.unshift(firstWord);
+    let ipsumString = ipsumStringArray.join("");
     this.setState({currentIpsum: ipsumString});
   }
 
   goSolo() {
     var ipsumString = this.state.activeIpsum.phrases[this.randomInRange()];
-    console.log(ipsumString);
     this.setState({currentIpsum: ipsumString});
   }
 
   randomInRange() {
     return Math.floor(Math.random() * this.state.activeIpsum.phrases.length)
+  }
+
+  capitalize(word) {
+    return word.charAt(0).toUpperCase() + word.slice(1);
+  }
+
+  punctuation() {
+    var puncArray = ['. ', '! ', '? ', '. '];
+    return puncArray[Math.floor(Math.random() * 4)];
+  }
+
+  fillerWord() {
+    var theFiller;
+    var fillerWords = ['and', 'or', 'while', 'then', 'and', 'where']
+    if (Math.floor(Math.random() * 100) < 40) {
+      theFiller = fillerWords[Math.floor(Math.random() * 6)]
+      theFiller = theFiller.concat(', ');
+    } else {
+      theFiller = fillerWords[Math.floor(Math.random() * 6)] + ' ';
+    }
+    return theFiller;
   }
 
   render() {
