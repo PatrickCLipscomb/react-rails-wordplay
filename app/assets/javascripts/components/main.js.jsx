@@ -2,8 +2,8 @@
 
 class Main extends React.Component {
   constructor(props) {
-    super()
-    this._bind('setGenericState', 'decideCurrentIpsum', 'removeMultiWords')
+    super(props)
+    this._bind('setGenericState', 'decideCurrentIpsum', 'removeMultiWords', 'changeTheme', 'getIpsum', 'goSolo')
     this.state = {
       ipsums: props.data[0],
       genericState: false,
@@ -11,6 +11,7 @@ class Main extends React.Component {
       activeIpsum: false,
       currentIpsum: "",
       genericIpsum: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      openingIpsum: "What are you waiting for? Go get some Ipsum."
     }
   }
 
@@ -25,7 +26,7 @@ class Main extends React.Component {
 
   decideCurrentIpsum() {
     if (this.state.activeIpsum) {
-      this.setState({currentIpsum: this.state.egoIpsum})
+      this.setState({currentIpsum: this.state.currentIpsum})
       console.log('hello')
     } else {
       this.setState({currentIpsum: this.state.genericIpsum})
@@ -52,6 +53,38 @@ class Main extends React.Component {
     return soloTheme;
   }
 
+  changeTheme(themeValue) {
+    var currentIpsumString;
+    var fullIpsum;
+    this.state.ipsums.forEach(function(ipsum) {
+      if (ipsum.theme === themeValue) {
+        fullIpsum = ipsum;
+      }
+    });
+    if (fullIpsum) {
+      currentIpsumString = this.state.openingIpsum;
+    }
+    if (themeValue === 'Generic') {
+      currentIpsumString = this.state.genericIpsum
+    }
+    currentIpsumString === this.state.genericIpsum ? this.setState({ currentIpsum: currentIpsumString, activeIpsum: false}) : this.setState({ currentIpsum: currentIpsumString, activeIpsum: fullIpsum });
+  }
+
+  getIpsum() {
+    var ipsumString = this.state.activeIpsum.phrases.join(" ");
+    this.setState({currentIpsum: ipsumString});
+  }
+
+  goSolo() {
+    var ipsumString = this.state.activeIpsum.phrases[this.randomInRange()];
+    console.log(ipsumString);
+    this.setState({currentIpsum: ipsumString});
+  }
+
+  randomInRange() {
+    return Math.floor(Math.random() * this.state.activeIpsum.phrases.length)
+  }
+
   render() {
     var themeContent = this.state.activeIpsum ? this.state.activeIpsum.theme : this.state.genericState.theme
     var themeImage = this.removeMultiWords(themeContent);
@@ -66,7 +99,8 @@ class Main extends React.Component {
           <h2 id="themeDescription">{mottoContent}</h2>
           <h3 id="motto"><em>"Ex rabidus populus verbis"</em></h3>
           <div className="flex-container">
-            <IpsumOutput currentIpsum={this.state.currentIpsum} />
+            <IpsumGenerator ipsums={this.state.ipsums} changeTheme={this.changeTheme} activeIpsum={this.state.activeIpsum} getIpsum={this.getIpsum} goSolo={this.goSolo} />
+            <IpsumOutput currentIpsum={this.state.currentIpsum} activeIpsum={this.state.activeIpsum} />
           </div>
         </div>
     )

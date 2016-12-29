@@ -149,3 +149,32 @@ h2#themeDescription {
   width: 100%;
   margin-top: -8px;
 }
+.generatorDIV {
+	width: 50%;
+	display: inline-block;
+}
+#paragraphs, #rangeValue {
+	display: inline;
+}
+#importantButton {
+	font-family: "Bungee";
+	display: block;
+	margin: 5px;
+}
+.float-right {
+  float: right;
+}
+#makeYourOwn {
+	color: rgb(80, 80, 222);
+	font-weight: bolder;
+	font-variant: small-caps;
+	font-size: 1.3rem;
+	text-decoration: none;
+}
+#makeYourOwn h4 {
+	text-shadow: 1.5px 1.5px 3px rgba(42, 51, 56, .125);
+}
+#makeYourOwn h4:hover {
+	cursor: pointer;
+	text-shadow: 1.5px 1.5px 3px rgba(200, 202, 179, .85);
+}

@@ -3,12 +3,16 @@
 class IpsumOutput extends React.Component {
   constructor(props) {
     super()
-    this._bind('copyToClipboard', 'toggleTags');
+    this._bind('copyToClipboard', 'toggleTags', 'styleIpsumOutput');
     this.state = {
       openTag: "",
       closeTag: "",
       tagText: "add"
     }
+  }
+
+  componentDidUpdate() {
+    console.log(this.props.activeIpsum);
   }
 
   _bind(...methods) {
@@ -28,13 +32,27 @@ class IpsumOutput extends React.Component {
     this.state.tagText === "add" ? this.setState({tagText: "remove", openTag: "<p>", closeTag: "</p>"}) : this.setState({tagText: "add", openTag: "", closeTag: ""})
   }
 
+  styleIpsumOutput() {
+    var ipsumJSX;
+    if (this.props.currentIpsum.split(" ").length < 9) {
+      ipsumJSX = <h3 id="ipsumOutput" style={{color: this.props.activeIpsum.color}}>{this.props.currentIpsum}</h3>
+      $('#addTags').hide();
+    } else {
+      ipsumJSX = <p id="ipsumOutput">{this.state.openTag}{this.props.currentIpsum}{this.state.closeTag}</p>
+      $('#addTags').show();
+    }
+    return ipsumJSX
+  }
+
   render() {
+    var ipsumOutputJSX = this.styleIpsumOutput();
     return(
       <div className="flex-item" id="ipsumOUTPUT">
-        <div className="header-background">
-          <h3 className="column-title">Ipsum</h3>
+        <div className="header-background" style={{background: this.props.activeIpsum.color}}>
+          <h3 className="column-title" style={{color: this.props.activeIpsum.accent}}>Ipsum</h3>
         </div>
-        <p id="ipsumOutput">{this.state.openTag}{this.props.currentIpsum}{this.state.closeTag}</p><button id="copyButton" onClick={this.copyToClipboard}>Copy</button>
+        {ipsumOutputJSX}
+        <button id="copyButton" onClick={this.copyToClipboard} style={{backgroundColor: this.props.activeIpsum.accent}}>Copy</button>
         <span id="addTags" onClick={this.toggleTags}>{this.state.tagText} &lt;p&gt;&lt;/p&gt; tags</span>
       </div>
     )
