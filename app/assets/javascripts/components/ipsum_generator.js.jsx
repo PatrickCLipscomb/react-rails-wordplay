@@ -3,7 +3,7 @@
 class IpsumGenerator extends React.Component {
   constructor(props) {
     super()
-    this._bind('listThemes', 'changeTheme', 'getIpsum', 'paragraphsNumber');
+    this._bind('listThemes', 'changeTheme', 'getIpsum', 'paragraphsNumber', 'makeIpsum');
     this.state = {
       paragraphNumber: 1
     }
@@ -36,6 +36,11 @@ class IpsumGenerator extends React.Component {
     this.setState({paragraphNumber: paragraphValue})
   }
 
+  makeIpsum(event) {
+    event.preventDefault();
+    this.props.makeIpsum()
+  }
+
   render() {
     var ipsumThemes = this.listThemes();
     return(
@@ -63,7 +68,7 @@ class IpsumGenerator extends React.Component {
               Don't bother with broken Latin babble when you can get filler text inspired by some of the best purveyors of spew out there in the game right now.
             </p>
             <p>
-              Dont care to stroke anyones ego, but your own?  Lets make this about YOU. Check out <a href="#" id="makeYourOwn">Make Your Own Ipsum Generator</a>.
+              Dont care to stroke anyones ego, but your own?  Lets make this about YOU. Check out <a href="#" id="makeYourOwn" onClick={this.makeIpsum}>Make Your Own Ipsum Generator</a>.
             </p>
           </div>
         </div>

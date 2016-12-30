@@ -3,7 +3,7 @@
 class Main extends React.Component {
   constructor(props) {
     super(props)
-    this._bind('setGenericState', 'decideCurrentIpsum', 'removeMultiWords', 'changeTheme', 'getIpsum', 'goSolo', 'capitalize', 'punctuation', 'fillerWord')
+    this._bind('setGenericState', 'decideCurrentIpsum', 'removeMultiWords', 'changeTheme', 'getIpsum', 'goSolo', 'capitalize', 'punctuation', 'fillerWord', 'renderCreatorJSX', 'renderStandardJSX', 'makeIpsum')
     this.state = {
       ipsums: props.data[0],
       genericState: false,
@@ -11,7 +11,8 @@ class Main extends React.Component {
       activeIpsum: false,
       currentIpsum: "",
       genericIpsum: "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-      openingIpsum: "What are you waiting for? Go get some Ipsum."
+      openingIpsum: "What are you waiting for? Go get some Ipsum.",
+      showStandard: true
     }
   }
 
@@ -51,6 +52,11 @@ class Main extends React.Component {
       soloTheme = theme
     }
     return soloTheme;
+  }
+
+  makeIpsum() {
+    this.changeTheme('Generic');
+    this.setState({showStandard: false})
   }
 
   changeTheme(themeValue) {
@@ -129,7 +135,9 @@ class Main extends React.Component {
     return theFiller;
   }
 
-  render() {
+
+
+  renderStandardJSX() {
     var themeContent = this.state.activeIpsum ? this.state.activeIpsum.theme : this.state.genericState.theme
     var themeImage = this.removeMultiWords(themeContent);
     var mottoContent = this.state.activeIpsum ? this.state.activeIpsum.motto : this.state.genericState.motto
@@ -143,10 +151,34 @@ class Main extends React.Component {
           <h2 id="themeDescription">{mottoContent}</h2>
           <h3 id="motto"><em>"Ex rabidus populus verbis"</em></h3>
           <div className="flex-container">
-            <IpsumGenerator ipsums={this.state.ipsums} changeTheme={this.changeTheme} activeIpsum={this.state.activeIpsum} getIpsum={this.getIpsum} goSolo={this.goSolo} />
+            <IpsumGenerator ipsums={this.state.ipsums} changeTheme={this.changeTheme} activeIpsum={this.state.activeIpsum} getIpsum={this.getIpsum} goSolo={this.goSolo} makeIpsum={this.makeIpsum} />
             <IpsumOutput currentIpsum={this.state.currentIpsum} activeIpsum={this.state.activeIpsum} />
           </div>
         </div>
     )
+  }
+
+  renderCreatorJSX() {
+    var themeContent = this.state.activeIpsum ? this.state.activeIpsum.theme : this.state.genericState.theme
+    var themeImage = this.removeMultiWords(themeContent);
+    var mottoContent = this.state.activeIpsum ? this.state.activeIpsum.motto : this.state.genericState.motto
+    return(
+      <div className="container textSetter">
+        <div className="hero">
+          <div id={themeImage}></div>
+          <img  src="" />
+        </div>
+        <h1 id='nameDisplay'>{themeContent}</h1>
+        <h2 id="themeDescription">{mottoContent}</h2>
+        <h3 id="motto"><em>"Ex rabidus populus verbis"</em></h3>
+        <div className="flex-container">
+          <UserIpsumGenerator ipsums={this.state.ipsums} activeIpsum={this.state.activeIpsum}/>
+        </div>
+      </div>
+    )
+  }
+
+  render() {
+    return this.state.showStandard ? this.renderStandardJSX() : this.renderCreatorJSX()
   }
 }
