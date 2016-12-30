@@ -3,7 +3,10 @@
 class IpsumGenerator extends React.Component {
   constructor(props) {
     super()
-    this._bind('listThemes', 'changeTheme', 'getIpsum');
+    this._bind('listThemes', 'changeTheme', 'getIpsum', 'paragraphsNumber');
+    this.state = {
+      paragraphNumber: 1
+    }
   }
 
   _bind(...methods) {
@@ -24,7 +27,13 @@ class IpsumGenerator extends React.Component {
 
   getIpsum(event) {
     event.preventDefault();
-    this.props.getIpsum();
+    this.props.getIpsum(this.state.paragraphNumber);
+  }
+
+  paragraphsNumber(event) {
+    var paragraphValue = event.currentTarget.value
+    console.log(event.currentTarget.value)
+    this.setState({paragraphNumber: paragraphValue})
   }
 
   render() {
@@ -45,7 +54,7 @@ class IpsumGenerator extends React.Component {
               <label htmlFor="oneWord" >One Word/Phrase:</label>
               <button id="oneWord" type="button" onClick={this.props.goSolo} style={{backgroundColor: this.props.activeIpsum.accent}}>Go solo.</button>
               <label htmlFor="paragraphs">Paragraphs:</label>
-              <input type="range" min="1" max="21" id="paragraphs" name="paragraphs" value="1"></input><h5 id="rangeValue">1</h5>
+              <input type="range" min="1" max="21" id="paragraphs" onChange={this.paragraphsNumber} name="paragraphs" value={this.state.paragraphNumber}></input><h5 id="rangeValue">{this.state.paragraphNumber}</h5>
               <button type="submit" id="importantButton" onClick={this.getIpsum} style={{backgroundColor: this.props.activeIpsum.accent}}>Get Ipsum!</button>
             </form>
           </div>

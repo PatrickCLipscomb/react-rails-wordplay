@@ -70,28 +70,35 @@ class Main extends React.Component {
     currentIpsumString === this.state.genericIpsum ? this.setState({ currentIpsum: currentIpsumString, activeIpsum: false}) : this.setState({ currentIpsum: currentIpsumString, activeIpsum: fullIpsum });
   }
 
-  getIpsum() {
-    var ipsumStringArray = []
+  getIpsum(paraNum) {
+    var paragraphNumber = parseInt(paraNum);
+    var ipsumParagraphArray = [];
     var phrases = this.state.activeIpsum.phrases
     var _this = this;
-    for (var i = 0; i < phrases.length; i++) {
-      ipsumStringArray.push(phrases[Math.floor(Math.random() * phrases.length)] + ' ');
-      if (Math.floor(Math.random() * 100) < 25) {
-        ipsumStringArray.push(_this.fillerWord());
+    for (var elmo = 0; elmo < paragraphNumber; elmo++) {
+      var ipsumStringArray = []
+      for (var i = 0; i < phrases.length; i++) {
         ipsumStringArray.push(phrases[Math.floor(Math.random() * phrases.length)] + ' ');
+        if (Math.floor(Math.random() * 100) < 35) {
+          ipsumStringArray.push(_this.fillerWord());
+          ipsumStringArray.push(phrases[Math.floor(Math.random() * phrases.length)] + ' ');
+        }
+        if (ipsumStringArray.length > 3 && Math.floor(Math.random() * 100) < 22) {
+          ipsumStringArray.push(phrases[Math.floor(Math.random() * phrases.length)]);
+          ipsumStringArray.push(_this.punctuation())
+          ipsumStringArray.push(_this.capitalize(phrases[Math.floor(Math.random() * phrases.length)]) + ' ');
+        }
       }
-      if (ipsumStringArray.length > 3 && Math.floor(Math.random() * 100) < 22) {
-        ipsumStringArray.push(phrases[Math.floor(Math.random() * phrases.length)]);
-        ipsumStringArray.push(_this.punctuation())
-        ipsumStringArray.push(_this.capitalize(phrases[Math.floor(Math.random() * phrases.length)]) + ' ');
-      }
+      ipsumStringArray.push(phrases[Math.floor(Math.random() * phrases.length)]);
+      ipsumStringArray.push(_this.punctuation().trim())
+      var firstWord = _this.capitalize(ipsumStringArray.shift());
+      ipsumStringArray.unshift(firstWord);
+      let ipsumString = ipsumStringArray.join("");
+      ipsumParagraphArray.push(ipsumString)
     }
-    ipsumStringArray.push(phrases[Math.floor(Math.random() * phrases.length)]);
-    ipsumStringArray.push(this.punctuation().trim())
-    var firstWord = this.capitalize(ipsumStringArray.shift());
-    ipsumStringArray.unshift(firstWord);
-    let ipsumString = ipsumStringArray.join("");
-    this.setState({currentIpsum: ipsumString});
+    let ipsumOutput = ipsumParagraphArray.join('</p><p>');
+    console.log(ipsumOutput);
+    this.setState({currentIpsum: ipsumOutput});
   }
 
   goSolo() {
