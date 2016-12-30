@@ -33,7 +33,7 @@
    margin-top: -8px;
  }
  .header-background {
-   margin: -15px;
+  margin: -15px;
  	background: rgba(42, 51, 56, 1);
  }
  h3.column-title{
@@ -114,6 +114,10 @@ a:hover {
 	max-height: 200px;
 	overflow: auto;
 }
+.ipsumOutput {
+  margin-top: 20px;
+	margin-bottom: 4px;
+}
 #singleWordOutput {
   text-align: center;
   font-size: 2em;
@@ -146,6 +150,21 @@ h2#themeDescription {
 }
 #Ego {
   content: url('/images/egokitty.png');
+  width: 100%;
+  margin-top: -8px;
+}
+#TrumpSum {
+  content: url('/images/TrumpSum.png');
+  width: 100%;
+  margin-top: -8px;
+}
+#YeezIpsum {
+  content: url('/images/YeezIpsum.jpg');
+  width: 100%;
+  margin-top: -8px;
+}
+#Bi-Winning-Ipsum {
+  content: url('/images/Bi-Winning-Ipsum.png');
   width: 100%;
   margin-top: -8px;
 }

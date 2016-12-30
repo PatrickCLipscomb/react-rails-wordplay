@@ -96,9 +96,7 @@ class Main extends React.Component {
       let ipsumString = ipsumStringArray.join("");
       ipsumParagraphArray.push(ipsumString)
     }
-    let ipsumOutput = ipsumParagraphArray.join('</p><p>');
-    console.log(ipsumOutput);
-    this.setState({currentIpsum: ipsumOutput});
+    this.setState({currentIpsum: ipsumParagraphArray});
   }
 
   goSolo() {
