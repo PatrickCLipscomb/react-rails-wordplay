@@ -35,9 +35,10 @@ class IpsumOutput extends React.Component {
   styleIpsumOutput() {
     var ipsumJSX;
     if (Array.isArray(this.props.currentIpsum)) {
-      ipsumJSX = this.props.currentIpsum.map((ipsumOutput) => {
-        return <p className="ipsumOutput">{this.state.openTag}{ipsumOutput}{this.state.closeTag}</p>
+      ipsumJSX = this.props.currentIpsum.map((ipsumOutput, index) => {
+        return <p className="ipsumOutput" key={index}>{this.state.openTag}{ipsumOutput}{this.state.closeTag}</p>
       })
+      $('#addTags').show();
     } else if (this.props.currentIpsum.split(" ").length < 9) {
       ipsumJSX = <h3 id="singleWordOutput" style={{color: this.props.activeIpsum.color}}>{this.props.currentIpsum}</h3>
       $('#addTags').hide();
@@ -55,7 +56,9 @@ class IpsumOutput extends React.Component {
         <div className="header-background" style={{background: this.props.activeIpsum.color}}>
           <h3 className="column-title" style={{color: this.props.activeIpsum.accent}}>Ipsum</h3>
         </div>
+        <div className="textOutputArea">
         {ipsumOutputJSX}
+        </div>
         <button id="copyButton" onClick={this.copyToClipboard} style={{backgroundColor: this.props.activeIpsum.accent}}>Copy</button>
         <span id="addTags" onClick={this.toggleTags}>{this.state.tagText} &lt;p&gt;&lt;/p&gt; tags</span>
       </div>

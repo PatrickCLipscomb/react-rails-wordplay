@@ -110,7 +110,8 @@ a:hover {
 }
 #ipsumOutput {
   margin-top: 20px;
-	margin-bottom: 4px;
+  padding-bottom: 10px;
+	margin-bottom: 10px;
 	max-height: 200px;
 	overflow: auto;
 }
@@ -196,4 +197,9 @@ h2#themeDescription {
 #makeYourOwn h4:hover {
 	cursor: pointer;
 	text-shadow: 1.5px 1.5px 3px rgba(200, 202, 179, .85);
+}
+.textOutputArea {
+  max-height: 200px;
+  overflow-y: auto;
+  padding-bottom: 20px;
 }
