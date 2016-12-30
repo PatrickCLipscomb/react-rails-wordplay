@@ -3,7 +3,7 @@
 class Main extends React.Component {
   constructor(props) {
     super(props)
-    this._bind('setGenericState', 'decideCurrentIpsum', 'removeMultiWords', 'changeTheme', 'getIpsum', 'goSolo', 'capitalize', 'punctuation', 'fillerWord', 'renderCreatorJSX', 'renderStandardJSX', 'makeIpsum')
+    this._bind('setGenericState', 'decideCurrentIpsum', 'removeMultiWords', 'changeTheme', 'getIpsum', 'goSolo', 'capitalize', 'punctuation', 'fillerWord', 'renderCreatorJSX', 'renderStandardJSX', 'makeIpsum', 'changeHeadImage')
     this.state = {
       ipsums: props.data[0],
       genericState: false,
@@ -23,6 +23,10 @@ class Main extends React.Component {
   componentDidMount() {
     this.setGenericState();
     this.decideCurrentIpsum();
+  }
+
+  changeHeadImage(themeName) {
+    
   }
 
   decideCurrentIpsum() {
@@ -172,7 +176,7 @@ class Main extends React.Component {
         <h2 id="themeDescription">{mottoContent}</h2>
         <h3 id="motto"><em>"Ex rabidus populus verbis"</em></h3>
         <div className="flex-container">
-          <UserIpsumGenerator ipsums={this.state.ipsums} activeIpsum={this.state.activeIpsum}/>
+          <UserIpsumGenerator ipsums={this.state.ipsums} activeIpsum={this.state.activeIpsum} changeHeadImage={this.changeHeadImage}/>
         </div>
       </div>
     )

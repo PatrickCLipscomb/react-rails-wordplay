@@ -207,39 +207,42 @@ h2#themeDescription {
 	margin-top: 20px;
 	margin-bottom: 20px;
 	width: 35%;
-	min-width: 100px;
+	min-width: 250px;
 	max-height: 180px;
 	overflow: auto;
 }
-#stagingArea ul {
+ul {
     list-style-image: url('/images/whitecat.png');
 		list-style-position: inside;
 }
-#stagingArea ul li:hover {
+li:hover {
 		cursor: crosshair;
     list-style-image: url('/images/blackcat.png');
 		list-style-position: inside;
 }
-.TrumpSum #stagingArea ul {
-    list-style-image: url('/images/wall.png');
+.TrumpSumLiIcon {
+    list-style-image: url('/images/Wall.png');
 		list-style-position: inside;
 }
-.TrumpSum #stagingArea ul li:hover {
+.TrumpSumLiIcon:hover {
 		cursor: crosshair;
     list-style-image: url('/images/target.png');
 		list-style-position: inside;
 }
-.Bi-Winning-Ipsum #stagingArea ul {
+.Bi-Winning-IpsumLiIcon {
     list-style-image: url('/images/pill.png');
 		list-style-position: inside;
 }
-.Bi-Winning-Ipsum #stagingArea ul li:hover {
+.Bi-Winning-IpsumLiIcon:hover {
     list-style-image: url('/images/mallet.png');
 }
-.YeezIpsum #stagingArea ul {
+.YeezIpsumLiIcon {
     list-style-image: url('/images/sun-glasses.png');
 		list-style-position: inside;
 }
-.YeezIpsum #stagingArea ul li:hover {
+.YeezIpsumLiIcon:hover {
     list-style-image: url('/images/thumbs-down-icon.png');
+}
+.generatorButton {
+  margin-left: 20px;
 }
