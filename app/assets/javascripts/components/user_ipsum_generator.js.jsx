@@ -3,9 +3,10 @@
 class UserIpsumGenerator extends React.Component {
   constructor(props) {
     super()
-    this._bind('themeList', 'creatingIpsum', 'setIpsum', 'getPhrases', 'creatingIpsumPhrases')
+    this._bind('themeList', 'creatingIpsum', 'setIpsum', 'getPhrases', 'addingPhrase', 'addPhrase', 'removePhrase', 'initNewIpsum', 'saveIpsum')
     this.state = {
-      ipsum: {theme: "", motto: "", phrases: [""], color: "", image: "", accent: ""}
+      ipsum: {theme: "", motto: "", phrases: [], color: "", image: "", accent: ""},
+      phraseToAdd: ""
     }
   }
 
@@ -28,6 +29,7 @@ class UserIpsumGenerator extends React.Component {
       }
     })
     this.setState({ipsum: selectedIpsum});
+    console.log(this.state.ipsum.phrases)
     this.props.changeHeadImage(selectedIpsum.theme)
   }
 
@@ -38,16 +40,52 @@ class UserIpsumGenerator extends React.Component {
     this.setState({ipsum: this.state.ipsum});
   }
 
-  creatingIpsumPhrases(event) {
-
-  }
 
   getPhrases() {
     var ipsum = this.state.ipsum;
     var phrases = this.state.ipsum.phrases.map((phrase) => {
-      return <li className={ipsum.theme + "LiIcon"}>{phrase}</li>
+      if (phrase.length > 0) {
+        return <li className={ipsum.theme + "LiIcon"} onClick={this.removePhrase} id={phrase}>{phrase}</li>
+      }
     });
     return phrases;
+  }
+
+  addPhrase(event) {
+    event.preventDefault();
+    this.state.ipsum.phrases.unshift(this.state.phraseToAdd)
+    this.setState({ipsum: this.state.ipsum, phraseToAdd: ""})
+  }
+
+  addingPhrase(event) {
+    var value = event.target.value
+    this.setState({phraseToAdd: value})
+  }
+
+  removePhrase(event) {
+    var phraseIndex = this.state.ipsum.phrases.indexOf(event.target.id)
+    this.state.ipsum.phrases.splice(phraseIndex, 1)
+    this.setState({ipsum: this.state.ipsum})
+  }
+
+  initNewIpsum(event) {
+    event.preventDefault();
+    var newIpsum = {theme: "", motto: "", phrases: [""], color: "", image: "", accent: ""}
+    this.setState({ipsum: newIpsum})
+  }
+
+  saveIpsum(event) {
+    event.preventDefault();
+    var data = this.state.ipsum
+    $.ajax({
+        method: 'POST',
+        url: "/ipsums",
+        dataType: 'JSON',
+        data: { ipsum: data },
+        success: ( () => {
+            this.setState({ ipsum: {theme: "", motto: "", phrases: [""], color: "", image: "", accent: ""} });
+        })
+    });
   }
 
   render() {
@@ -65,14 +103,13 @@ class UserIpsumGenerator extends React.Component {
               <option selected disabled>Load yer Ipsum</option>
               {userIpsumThemes}
             </select>
-            <button type="button" className="generatorButton" style={{backgroundColor: this.state.ipsum.accent}}>Delete generator</button>
+            <button type="button" className="generatorButton" style={{backgroundColor: this.state.ipsum.accent}} onClick={this.initNewIpsum}>New Ipsum Generator</button>
           </form>
           <br />
           <form>
             <label htmlFor="phrases">Type here to add to your Ipsum generator!</label>
-            <TextInput value={} onChange={this.creatingIpsum} type="text" name="phrases" />
-            <button type="submit" style={{backgroundColor: this.state.ipsum.accent}} className="generatorButton">Add Word or Phrase</button>
-            <button type="reset" value="Reset" style={{backgroundColor: this.state.ipsum.accent}}>Clear</button>
+            <TextInput value={this.state.phraseToAdd} onChange={this.addingPhrase} type="text" name="phrases" id="phrases" />
+            <button style={{backgroundColor: this.state.ipsum.accent}} className="generatorButton" onClick={this.addPhrase}>Add Word or Phrase</button>
           </form>
           <div className={this.props.activeIpsum.theme} id="stagingArea">
             <ul>
@@ -87,14 +124,14 @@ class UserIpsumGenerator extends React.Component {
             <TextInput value={this.state.ipsum.image} onChange={this.creatingIpsum} placeholder="http://yourURL.com/img.jpg" type="text" name="image" />
             <br />
             <label htmlFor="color">Add a theme rgb-color</label>
-            <TextInput value={this.state.ipsum.color} onChange={this.creatingIpsum} placeholder="51, 153, 255" type="text" name="color" />
+            <TextInput value={this.state.ipsum.color} onChange={this.creatingIpsum} placeholder="rgb(51, 153, 255)" type="text" name="color" />
             <br />
             <label htmlFor="accent">Add a accent rgb-color</label>
-            <TextInput value={this.state.ipsum.accent} onChange={this.creatingIpsum} placeholder="55, 140, 260" type="text" name="accent" />
+            <TextInput value={this.state.ipsum.accent} onChange={this.creatingIpsum} placeholder="rgb(55, 140, 260)" type="text" name="accent" />
             <br />
             <label htmlFor="theme">Choose a name</label>
             <TextInput value={this.state.ipsum.theme} onChange={this.creatingIpsum} type="text" name="theme" />
-            <button type="submit" style={{backgroundColor: this.state.ipsum.accent}} className="generatorButton">Save My Ipsum!</button>
+            <button type="submit" style={{backgroundColor: this.state.ipsum.accent}} className="generatorButton" onClick={this.saveIpsum}>Save My Ipsum!</button>
             <button id="goBack" type="button" style={{backgroundColor: this.state.ipsum.accent}}>Go back</button>
           </form>
         </div>
