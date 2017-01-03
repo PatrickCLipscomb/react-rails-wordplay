@@ -11,10 +11,6 @@ class IpsumOutput extends React.Component {
     }
   }
 
-  componentDidUpdate() {
-    console.log(this.props.activeIpsum);
-  }
-
   _bind(...methods) {
       methods.forEach((method) => this[method] = this[method].bind(this));
   }

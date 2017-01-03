@@ -32,7 +32,6 @@ class IpsumGenerator extends React.Component {
 
   paragraphsNumber(event) {
     var paragraphValue = event.currentTarget.value
-    console.log(event.currentTarget.value)
     this.setState({paragraphNumber: paragraphValue})
   }
 

@@ -3,7 +3,7 @@
 class UserIpsumGenerator extends React.Component {
   constructor(props) {
     super()
-    this._bind('themeList', 'creatingIpsum', 'setIpsum', 'getPhrases', 'addingPhrase', 'addPhrase', 'removePhrase', 'initNewIpsum', 'saveIpsum', "goBack")
+    this._bind('themeList', 'creatingIpsum', 'setIpsum', 'getPhrases', 'addingPhrase', 'addPhrase', 'removePhrase', 'initNewIpsum', 'saveIpsum', "goBack", "createNewIpsum", 'updateOldIpsum', 'makeItRED', 'removeTheRed')
     this.state = {
       ipsum: {theme: "", motto: "", phrases: [], color: "", image: "", accent: ""},
       phraseToAdd: ""
@@ -13,6 +13,8 @@ class UserIpsumGenerator extends React.Component {
   _bind(...methods) {
       methods.forEach((method) => this[method] = this[method].bind(this));
   }
+
+  // themeList function is being called everytime there is a key stroke on add ipsum phrase, and breaks upon update with the server.
 
   themeList() {
     var themes = this.props.ipsums.map((ipsum) => {
@@ -71,28 +73,64 @@ class UserIpsumGenerator extends React.Component {
     event.preventDefault();
     var newIpsum = {theme: "", motto: "", phrases: [""], color: "", image: "", accent: ""}
     this.setState({ipsum: newIpsum})
+    document.getElementById('userLoaderPicker').value=0;
   }
 
   saveIpsum(event) {
     event.preventDefault();
     if (this.state.ipsum.phrases.length < 4) {
-      alert("You've got more ego than that, don't ya? Give us more Ipsum")
+      this.makeItRED('phraseLabel');
       return
-    } else if (this.state.ipsum.theme.length < 1 || this.state.ipsum.motto.length < 1) {
-      alert("You've got to take credit for this Ipsum, don't ya? Give us some deets")
+    } else if (this.state.ipsum.motto.length < 1) {
+      this.makeItRED('mottoLabel');
+      this.removeTheRed('phraseLabel');
+      return
+    } else if (this.state.ipsum.theme.length < 1) {
+      this.makeItRED('themeLabel');
+      this.removeTheRed('phraseLabel');
+      this.removeTheRed('mottoLabel');
       return
     }
+    this.removeTheRed('phraseLabel');
+    this.removeTheRed('mottoLabel');
+    this.removeTheRed('themeLabel');
     var data = this.state.ipsum
+    this.props.ipsums.includes(data) ? this.updateOldIpsum(data) : this.createNewIpsum(data);
+  }
+
+  removeTheRed(targetID) {
+    $('#' + targetID).removeAttr('class');
+  }
+
+  makeItRED(targetID) {
+    $('#' + targetID).attr('class', 'makeItRED');
+  }
+
+  createNewIpsum(data) {
     $.ajax({
         method: 'POST',
         url: "/ipsums",
         dataType: 'JSON',
         data: { ipsum: data },
-        success: ( () => {
+        success: ( (newIpsum) => {
             this.setState({ ipsum: {theme: "", motto: "", phrases: [""], color: "", image: "", accent: ""} });
+            this.props.handleIpsumCreation(newIpsum);
         })
     });
-    this.props.getNewIpsum();
+  }
+
+  updateOldIpsum(data) {
+    var id = "ipsums/" + data.id.toString()
+    $.ajax({
+        method: 'PATCH',
+        url: id,
+        dataType: 'JSON',
+        data: { ipsum: data },
+        success: ( (updatedIpsum) => {
+            this.setState({ ipsum: {theme: "", motto: "", phrases: [""], color: "", image: "", accent: ""} });
+            this.props.handleIpsumUpdate(data, updatedIpsum);
+        })
+    });
   }
 
   goBack(event) {
@@ -119,7 +157,7 @@ class UserIpsumGenerator extends React.Component {
           </form>
           <br />
           <form>
-            <label htmlFor="phrases">Type here to add to your Ipsum generator!</label>
+            <label htmlFor="phrases" id="phraseLabel">Type here to add to your Ipsum generator!</label>
             <TextInput value={this.state.phraseToAdd} onChange={this.addingPhrase} type="text" name="phrases" id="phrases" />
             <button style={{backgroundColor: this.state.ipsum.accent}} className="generatorButton" onClick={this.addPhrase}>Add Word or Phrase</button>
           </form>
@@ -129,7 +167,7 @@ class UserIpsumGenerator extends React.Component {
             </ul>
           </div>
           <form>
-            <label htmlFor="motto">Add a Motto</label>
+            <label htmlFor="motto" id="mottoLabel">Add a Motto</label>
             <TextInput value={this.state.ipsum.motto} onChange={this.creatingIpsum} type="text" name="motto" />
             <br />
             <label htmlFor="image">Add a theme image</label>
@@ -141,7 +179,7 @@ class UserIpsumGenerator extends React.Component {
             <label htmlFor="accent">Add a accent rgb-color</label>
             <TextInput value={this.state.ipsum.accent} onChange={this.creatingIpsum} placeholder="rgb(55, 140, 260)" type="text" name="accent" />
             <br />
-            <label htmlFor="theme">Choose a name</label>
+            <label htmlFor="theme" id="themeLabel">Choose a name</label>
             <TextInput value={this.state.ipsum.theme} onChange={this.creatingIpsum} type="text" name="theme" />
             <button type="submit" style={{backgroundColor: this.state.ipsum.accent}} className="generatorButton" onClick={this.saveIpsum}>Save My Ipsum!</button>
             <button id="goBack" type="button" onClick={this.goBack} style={{backgroundColor: this.state.ipsum.accent}}>Go back</button>

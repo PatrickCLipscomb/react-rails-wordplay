@@ -3,7 +3,7 @@
 class Main extends React.Component {
   constructor(props) {
     super(props)
-    this._bind('setGenericState', 'decideCurrentIpsum', 'removeMultiWords', 'changeTheme', 'getIpsum', 'goSolo', 'capitalize', 'punctuation', 'fillerWord', 'renderCreatorJSX', 'renderStandardJSX', 'makeIpsum', 'changeHeadImage', 'showStandard', 'getNewIpsum')
+    this._bind('setGenericState', 'decideCurrentIpsum', 'removeMultiWords', 'changeTheme', 'getIpsum', 'goSolo', 'capitalize', 'punctuation', 'fillerWord', 'renderCreatorJSX', 'renderStandardJSX', 'makeIpsum', 'changeHeadImage', 'showStandard', 'handleIpsumCreation', 'handleIpsumUpdate')
     this.state = {
       ipsums: props.data[0],
       genericState: false,
@@ -140,19 +140,18 @@ class Main extends React.Component {
     this.setState({showStandard: true});
   }
 
-  getNewIpsum() {
-    // console.log('here hear')
-    // debugger;
-    // $.ajax({
-    //     method: 'GET',
-    //     url: "/ipsums",
-    //     dataType: 'JSON',
-    //     success: (ipsums) => {
-    //       console.log(ipsums)
-    //         this.setState({ ipsums: ipsums });
-    //         console.log(this.state.ipsums)
-    //     }
-    // })
+  handleIpsumCreation(newIpsum) {
+    this.state.ipsums.push(newIpsum);
+    console.log(this.state.ipsums)
+    this.setState({ipsums: this.state.ipsums});
+  }
+
+  handleIpsumUpdate(oldIpsum, updatedIpsum) {
+    var index = this.state.ipsums.indexOf(oldIpsum);
+    this.state.ipsums.splice(index, 1, updatedIpsum);
+    console.log(this.state.ipsums)
+    this.setState({ipsums: this.state.ipsums});
+
   }
 
   renderStandardJSX() {
@@ -190,7 +189,7 @@ class Main extends React.Component {
         <h2 id="themeDescription">{mottoContent}</h2>
         <h3 id="motto"><em>"Ex rabidus populus verbis"</em></h3>
         <div className="flex-container">
-          <UserIpsumGenerator ipsums={this.state.ipsums} activeIpsum={this.state.activeIpsum} changeHeadImage={this.changeHeadImage} goBack={this.showStandard} getNewIpsum={this.getNewIpsum} />
+          <UserIpsumGenerator ipsums={this.state.ipsums} activeIpsum={this.state.activeIpsum} changeHeadImage={this.changeHeadImage} goBack={this.showStandard} getNewIpsum={this.getNewIpsum} handleIpsumCreation={this.handleIpsumCreation} handleIpsumUpdate={this.handleIpsumUpdate}/>
         </div>
       </div>
     )
