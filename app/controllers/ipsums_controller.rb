@@ -1,6 +1,10 @@
 class IpsumsController < ApplicationController
   def index
     @ipsums = Ipsum.all
+    respond_to do |format|
+      format.html {render :index}
+      format.json {render json: @ipsum}
+    end
   end
   def create
     @ipsum = Ipsum.new

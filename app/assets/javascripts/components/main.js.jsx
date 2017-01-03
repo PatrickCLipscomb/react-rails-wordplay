@@ -3,7 +3,7 @@
 class Main extends React.Component {
   constructor(props) {
     super(props)
-    this._bind('setGenericState', 'decideCurrentIpsum', 'removeMultiWords', 'changeTheme', 'getIpsum', 'goSolo', 'capitalize', 'punctuation', 'fillerWord', 'renderCreatorJSX', 'renderStandardJSX', 'makeIpsum', 'changeHeadImage')
+    this._bind('setGenericState', 'decideCurrentIpsum', 'removeMultiWords', 'changeTheme', 'getIpsum', 'goSolo', 'capitalize', 'punctuation', 'fillerWord', 'renderCreatorJSX', 'renderStandardJSX', 'makeIpsum', 'changeHeadImage', 'showStandard', 'getNewIpsum')
     this.state = {
       ipsums: props.data[0],
       genericState: false,
@@ -26,18 +26,15 @@ class Main extends React.Component {
   }
 
   changeHeadImage(themeName) {
-    
+
   }
 
   decideCurrentIpsum() {
     if (this.state.activeIpsum) {
       this.setState({currentIpsum: this.state.currentIpsum})
-      console.log('hello')
     } else {
       this.setState({currentIpsum: this.state.genericIpsum})
-      console.log('hello2')
     }
-    console.log(this.state.currentIpsum);
   }
 
   setGenericState() {
@@ -139,7 +136,24 @@ class Main extends React.Component {
     return theFiller;
   }
 
+  showStandard() {
+    this.setState({showStandard: true});
+  }
 
+  getNewIpsum() {
+    // console.log('here hear')
+    // debugger;
+    // $.ajax({
+    //     method: 'GET',
+    //     url: "/ipsums",
+    //     dataType: 'JSON',
+    //     success: (ipsums) => {
+    //       console.log(ipsums)
+    //         this.setState({ ipsums: ipsums });
+    //         console.log(this.state.ipsums)
+    //     }
+    // })
+  }
 
   renderStandardJSX() {
     var themeContent = this.state.activeIpsum ? this.state.activeIpsum.theme : this.state.genericState.theme
@@ -149,7 +163,7 @@ class Main extends React.Component {
         <div className="container textSetter">
           <div className="hero">
             <div id={themeImage}></div>
-            <img  src="" />
+            <img  src={this.state.activeIpsum.image} />
           </div>
           <h1 id='nameDisplay'>{themeContent}</h1>
           <h2 id="themeDescription">{mottoContent}</h2>
@@ -170,13 +184,13 @@ class Main extends React.Component {
       <div className="container textSetter">
         <div className="hero">
           <div id={themeImage}></div>
-          <img  src="" />
+          <img  src={this.state.activeIpsum.image} />
         </div>
         <h1 id='nameDisplay'>{themeContent}</h1>
         <h2 id="themeDescription">{mottoContent}</h2>
         <h3 id="motto"><em>"Ex rabidus populus verbis"</em></h3>
         <div className="flex-container">
-          <UserIpsumGenerator ipsums={this.state.ipsums} activeIpsum={this.state.activeIpsum} changeHeadImage={this.changeHeadImage}/>
+          <UserIpsumGenerator ipsums={this.state.ipsums} activeIpsum={this.state.activeIpsum} changeHeadImage={this.changeHeadImage} goBack={this.showStandard} getNewIpsum={this.getNewIpsum} />
         </div>
       </div>
     )

@@ -3,7 +3,7 @@
 class UserIpsumGenerator extends React.Component {
   constructor(props) {
     super()
-    this._bind('themeList', 'creatingIpsum', 'setIpsum', 'getPhrases', 'addingPhrase', 'addPhrase', 'removePhrase', 'initNewIpsum', 'saveIpsum')
+    this._bind('themeList', 'creatingIpsum', 'setIpsum', 'getPhrases', 'addingPhrase', 'addPhrase', 'removePhrase', 'initNewIpsum', 'saveIpsum', "goBack")
     this.state = {
       ipsum: {theme: "", motto: "", phrases: [], color: "", image: "", accent: ""},
       phraseToAdd: ""
@@ -29,7 +29,6 @@ class UserIpsumGenerator extends React.Component {
       }
     })
     this.setState({ipsum: selectedIpsum});
-    console.log(this.state.ipsum.phrases)
     this.props.changeHeadImage(selectedIpsum.theme)
   }
 
@@ -76,6 +75,13 @@ class UserIpsumGenerator extends React.Component {
 
   saveIpsum(event) {
     event.preventDefault();
+    if (this.state.ipsum.phrases.length < 4) {
+      alert("You've got more ego than that, don't ya? Give us more Ipsum")
+      return
+    } else if (this.state.ipsum.theme.length < 1 || this.state.ipsum.motto.length < 1) {
+      alert("You've got to take credit for this Ipsum, don't ya? Give us some deets")
+      return
+    }
     var data = this.state.ipsum
     $.ajax({
         method: 'POST',
@@ -86,6 +92,12 @@ class UserIpsumGenerator extends React.Component {
             this.setState({ ipsum: {theme: "", motto: "", phrases: [""], color: "", image: "", accent: ""} });
         })
     });
+    this.props.getNewIpsum();
+  }
+
+  goBack(event) {
+    event.preventDefault();
+    this.props.goBack();
   }
 
   render() {
@@ -132,7 +144,7 @@ class UserIpsumGenerator extends React.Component {
             <label htmlFor="theme">Choose a name</label>
             <TextInput value={this.state.ipsum.theme} onChange={this.creatingIpsum} type="text" name="theme" />
             <button type="submit" style={{backgroundColor: this.state.ipsum.accent}} className="generatorButton" onClick={this.saveIpsum}>Save My Ipsum!</button>
-            <button id="goBack" type="button" style={{backgroundColor: this.state.ipsum.accent}}>Go back</button>
+            <button id="goBack" type="button" onClick={this.goBack} style={{backgroundColor: this.state.ipsum.accent}}>Go back</button>
           </form>
         </div>
       </div>
