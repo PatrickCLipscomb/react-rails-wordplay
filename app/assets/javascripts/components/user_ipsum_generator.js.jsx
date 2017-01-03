@@ -14,8 +14,6 @@ class UserIpsumGenerator extends React.Component {
       methods.forEach((method) => this[method] = this[method].bind(this));
   }
 
-  // themeList function is being called everytime there is a key stroke on add ipsum phrase, and breaks upon update with the server.
-
   themeList() {
     var themes = this.props.ipsums.map((ipsum) => {
       return <option key={ipsum.id + 1000} value={ipsum.theme}>{ipsum.theme}</option>
