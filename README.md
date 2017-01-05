@@ -1,5 +1,4 @@
 #  Ego Ipsum
-## *By Patrick Lipscomb*
 
 Don't bother with broken Latin babble when you can get filler text inspired by some of the best purveyors of spew out there in the game right now. Or maybe you don't care to stroke anyone's ego but your own?  Lets make this about YOU. Check out the create your own Ipsum functionality and see what you can create...
 
