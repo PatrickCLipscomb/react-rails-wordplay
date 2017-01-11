@@ -1,18 +1,4 @@
-/*
- * This is a manifest file that'll be compiled into application.css, which will include all the files
- * listed below.
- *
- * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
- * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
- *
- * You're free to add application-wide styles to this file and they'll appear at the bottom of the
- * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
- * files in this directory. Styles in this file should be added after the last require_* statement.
- * It is generally better to create a new file per style scope.
- *
- *= require_tree .
- *= require_self
- */
+
 
  /*browser reset*/
  html, body, div, span, applet, object, iframe,
@@ -105,8 +91,44 @@ table {
    margin-right: auto;
    margin-left: auto;
  }
+ @mixin iconStyle($image, $cursor: default) {
+   list-style-image: url('/images/#{$image}.png');
+   list-style-position: inside;
+   cursor: $cursor;
+ }
+ ul {
+   @include iconStyle(whitecat);
+ }
+ li:hover {
+   @include iconStyle(blackcat, crosshair);
+ }
+ .TrumpSumLiIcon {
+   @include iconStyle(Wall);
+   &:hover {
+     @include iconStyle(target, crosshair);
+   }
+ }
+ .Bi-Winning-IpsumLiIcon {
+   @include iconStyle(pill);
+   &:hover {
+     @include iconStyle(mallet, crosshair);
+   }
+ }
+ .YeezIpsumLiIcon {
+   @include iconStyle(sun-glasses);
+   &:hover {
+     @include iconStyle(thumbs-down-icon, crosshair);
+   }
+ }
+ @mixin contain-flex($pad) {
+   padding: $pad
+ }
+ @mixin margOutput($top, $bot) {
+   margin-top: $top;
+   margin-bottom: $bot;
+ }
  .flex-container {
-  padding: 0;
+  @include contain-flex(0px);
   margin: 0;
   list-style: none;
   display: -webkit-box;
@@ -118,7 +140,7 @@ table {
   justify-content: space-around;
 }
 .flex-item {
-  padding: 15px;
+  @include contain-flex(15px);
   width: 45%;
 	min-width: 500px;
   margin-top: 20px;
@@ -130,8 +152,7 @@ input {
 }
 label {
   display: block;
-	margin-bottom: 7px;
-	margin-top: 15px;
+  @include margOutput(15px, 7px);
 	font-size: 15px;
 }
 p {
@@ -152,15 +173,13 @@ a:hover {
 	display: none;
 }
 #ipsumOutput {
-  margin-top: 20px;
+  @include margOutput(20px, 10px);
   padding-bottom: 10px;
-	margin-bottom: 10px;
 	max-height: 200px;
 	overflow: auto;
 }
 .ipsumOutput {
-  margin-top: 20px;
-	margin-bottom: 4px;
+  @include margOutput(20px, 4px);
 }
 #singleWordOutput {
   text-align: center;
@@ -179,36 +198,33 @@ h1#nameDisplay {
 	font-family: 'Bungee Shade', sans-serif;
 	text-align: center;
   font-size: 100px;
-  margin-top: 15px;
-  margin-bottom: 0px;
+  @include margOutput(15px, 0px);
 }
 h2#themeDescription {
 	text-align: center;
 	font-size: 35px;
-	margin-top:10px;
-	margin-bottom: 20px;
+  @include margOutput(10px, 20px);
 }
 #motto {
 	text-align: center;
 	font-family: serif;
 }
-#Ego {
-  content: url('/images/egokitty.png');
+@mixin spewImage($image) {
+  content: url('/images/#{$image}.png');
   width: 100%;
   margin-top: -8px;
 }
-#TrumpSum {
-  content: url('/images/TrumpSum.png');
-  width: 100%;
-  margin-top: -8px;
+#Ego {
+  @include spewImage(egokitty);
+}
+$spewers: TrumpSum Bi-Winning-Ipsum;
+@each $spew in $spewers {
+  ##{$spew} {
+    @include spewImage($spew);
+  }
 }
 #YeezIpsum {
   content: url('/images/YeezIpsum.jpg');
-  width: 100%;
-  margin-top: -8px;
-}
-#Bi-Winning-Ipsum {
-  content: url('/images/Bi-Winning-Ipsum.png');
   width: 100%;
   margin-top: -8px;
 }
@@ -253,38 +269,6 @@ h2#themeDescription {
 	min-width: 250px;
 	max-height: 180px;
 	overflow: auto;
-}
-ul {
-    list-style-image: url('/images/whitecat.png');
-		list-style-position: inside;
-}
-li:hover {
-		cursor: crosshair;
-    list-style-image: url('/images/blackcat.png');
-		list-style-position: inside;
-}
-.TrumpSumLiIcon {
-    list-style-image: url('/images/Wall.png');
-		list-style-position: inside;
-}
-.TrumpSumLiIcon:hover {
-		cursor: crosshair;
-    list-style-image: url('/images/target.png');
-		list-style-position: inside;
-}
-.Bi-Winning-IpsumLiIcon {
-    list-style-image: url('/images/pill.png');
-		list-style-position: inside;
-}
-.Bi-Winning-IpsumLiIcon:hover {
-    list-style-image: url('/images/mallet.png');
-}
-.YeezIpsumLiIcon {
-    list-style-image: url('/images/sun-glasses.png');
-		list-style-position: inside;
-}
-.YeezIpsumLiIcon:hover {
-    list-style-image: url('/images/thumbs-down-icon.png');
 }
 .generatorButton {
   margin-left: 20px;
