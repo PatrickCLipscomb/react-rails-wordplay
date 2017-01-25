@@ -10,7 +10,7 @@ https://railswordplay.herokuapp.com/
 ## Technologies Used
 
 * **Application**: *Ruby on Rails 5, ReactJS*<br>
-* **Testing**: *TBD*<br>
+* **Testing**: *Rspec, Capybara*<br>
 * **Database**: *Postgres, ActiveRecord*
 
 Installation
