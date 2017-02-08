@@ -155,30 +155,27 @@ class Main extends React.Component {
   }
 
   renderStandardJSX() {
-    var themeContent = this.state.activeIpsum ? this.state.activeIpsum.theme : this.state.genericState.theme
-    var themeImage = this.removeMultiWords(themeContent);
-    var mottoContent = this.state.activeIpsum ? this.state.activeIpsum.motto : this.state.genericState.motto
     return(
-        <div className="container textSetter">
-          <div className="hero">
-            <div id={themeImage}></div>
-            <img  src={this.state.activeIpsum.image} />
-          </div>
-          <h1 id='nameDisplay'>{themeContent}</h1>
-          <h2 id="themeDescription">{mottoContent}</h2>
-          <h3 id="motto"><em>"Ex rabidus populus verbis"</em></h3>
-          <div className="flex-container">
-            <IpsumGenerator ipsums={this.state.ipsums} changeTheme={this.changeTheme} activeIpsum={this.state.activeIpsum} getIpsum={this.getIpsum} goSolo={this.goSolo} makeIpsum={this.makeIpsum} />
-            <IpsumOutput currentIpsum={this.state.currentIpsum} activeIpsum={this.state.activeIpsum} />
-          </div>
-        </div>
+      <div className="flex-container">
+        <IpsumGenerator ipsums={this.state.ipsums} changeTheme={this.changeTheme} activeIpsum={this.state.activeIpsum} getIpsum={this.getIpsum} goSolo={this.goSolo} makeIpsum={this.makeIpsum} />
+        <IpsumOutput currentIpsum={this.state.currentIpsum} activeIpsum={this.state.activeIpsum} />
+      </div>
     )
   }
 
   renderCreatorJSX() {
+    return(
+      <div className="flex-container">
+        <UserIpsumGenerator ipsums={this.state.ipsums} activeIpsum={this.state.activeIpsum} changeHeadImage={this.changeHeadImage} goBack={this.showStandard} getNewIpsum={this.getNewIpsum} handleIpsumCreation={this.handleIpsumCreation} handleIpsumUpdate={this.handleIpsumUpdate}/>
+      </div>
+    )
+  }
+
+  render() {
     var themeContent = this.state.activeIpsum ? this.state.activeIpsum.theme : this.state.genericState.theme
     var themeImage = this.removeMultiWords(themeContent);
     var mottoContent = this.state.activeIpsum ? this.state.activeIpsum.motto : this.state.genericState.motto
+    var whatToRender = this.state.showStandard ? this.renderStandardJSX() : this.renderCreatorJSX();
     return(
       <div className="container textSetter">
         <div className="hero">
@@ -188,14 +185,8 @@ class Main extends React.Component {
         <h1 id='nameDisplay'>{themeContent}</h1>
         <h2 id="themeDescription">{mottoContent}</h2>
         <h3 id="motto"><em>"Ex rabidus populus verbis"</em></h3>
-        <div className="flex-container">
-          <UserIpsumGenerator ipsums={this.state.ipsums} activeIpsum={this.state.activeIpsum} changeHeadImage={this.changeHeadImage} goBack={this.showStandard} getNewIpsum={this.getNewIpsum} handleIpsumCreation={this.handleIpsumCreation} handleIpsumUpdate={this.handleIpsumUpdate}/>
-        </div>
+        {whatToRender}
       </div>
     )
-  }
-
-  render() {
-    return this.state.showStandard ? this.renderStandardJSX() : this.renderCreatorJSX()
   }
 }
